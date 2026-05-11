@@ -1,0 +1,283 @@
+/* ═══════════════════════════════════════════════════════════
+   style.css — BASE GLOBAL
+   Responsabilidade: variáveis CSS, reset, tipografia,
+   botões, layout das telas, utilitários compartilhados.
+   NÃO contém: HUD, diálogo, batalha ou animações.
+═══════════════════════════════════════════════════════════ */
+
+/* ── VARIÁVEIS ──────────────────────────────────────────── */
+:root {
+  --choc:  #000000;
+  --choc2: #0a0a0f;
+  --gold:  #f0c040;
+  --gold2: #c8962a;
+  --red:   #ff2200;
+  --green: #44cc66;
+  --cream: #e8dcc8;
+  --gray:  #7a6a5a;
+  --blue:  #6090cc;
+}
+
+/* ── RESET ──────────────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  font-family: 'Press Start 2P', monospace;
+  color: var(--cream);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  image-rendering: pixelated;
+}
+
+/* ── PIXEL BOX — caixa com corte diagonal nos cantos ────── */
+.px-box {
+  border: 2px solid var(--gold2);
+  background: rgba(0,0,0,0.82);
+  clip-path: polygon(
+    6px 0%, calc(100% - 6px) 0%,
+    100% 6px, 100% calc(100% - 6px),
+    calc(100% - 6px) 100%, 6px 100%,
+    0% calc(100% - 6px), 0% 6px
+  );
+}
+
+/* ── BOTÕES ─────────────────────────────────────────────── */
+.btn-px {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(7px, 0.9vw, 10px);
+  color: var(--choc);
+  background: var(--gold);
+  border: none;
+  padding: 13px 26px;
+  cursor: pointer;
+  clip-path: polygon(
+    4px 0%, calc(100% - 4px) 0%,
+    100% 4px, 100% calc(100% - 4px),
+    calc(100% - 4px) 100%, 4px 100%,
+    0% calc(100% - 4px), 0% 4px
+  );
+  transition: background 0.15s, transform 0.1s;
+  letter-spacing: 1px;
+  line-height: 1.6;
+}
+.btn-px:hover  { background: #ffd060; transform: scale(1.04); }
+.btn-px:active { transform: scale(0.97); }
+
+/* Variações de botão */
+.btn-px.danger { background: #e02701; color: var(--cream); }
+.btn-px.ghost  { background: rgba(13,9,6,0.85); color: var(--gold); border: 2px solid var(--gold2); }
+.btn-px.small  { font-size: 6px; padding: 9px 16px; }
+
+/* ── TELA: INTRO ────────────────────────────────────────── */
+#screen-intro {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#intro-texto {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(11px, 1.4vw, 16px);
+  color: var(--cream);
+  max-width: 680px;
+  width: 88%;
+  line-height: 2.4;
+  text-align: center;
+  white-space: pre-wrap;
+  transition: opacity 1.2s ease;
+}
+
+#btn-pular {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  opacity: 0.5;
+}
+#btn-pular:hover { opacity: 1; }
+
+/* ── TELA: TÍTULO ───────────────────────────────────────── */
+#screen-title {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  background: radial-gradient(ellipse at center, #0d0d1a 0%, #000 70%);
+  position: relative;
+  overflow: hidden;
+}
+
+#particles-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.title-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+#title-logo {
+  font-size: clamp(18px, 2.8vw, 32px);
+  color: var(--gold);
+  text-shadow: 0 0 20px #f0c04088, 4px 4px 0 #000;
+  letter-spacing: 4px;
+  text-align: center;
+  line-height: 2;
+  animation: pulso 2.4s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+#title-sub {
+  font-size: clamp(6px, 0.9vw, 8px);
+  color: var(--gray);
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 2.8;
+  position: relative;
+  z-index: 2;
+}
+
+/* Botões do título acima das partículas */
+#screen-title .btn-px { position: relative; z-index: 2; }
+
+/* ── TELA: TRANSIÇÃO DE FASE ────────────────────────────── */
+#screen-fase {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+#fase-nome-big {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(14px, 2vw, 22px);
+  color: var(--gold);
+  letter-spacing: 4px;
+  text-align: center;
+  text-shadow: 3px 3px 0 #3a2000;
+  animation: fadeIn 0.8s ease;
+}
+
+#fase-sub-big {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(10px, 1.2vw, 14px);
+  color: var(--gray);
+  letter-spacing: 3px;
+  text-align: center;
+  animation: fadeIn 1.2s ease;
+}
+
+/* ── TELA: JOGO ─────────────────────────────────────────── */
+#screen-game {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fundo com imagem de cenário */
+#game-bg {
+  position: absolute;
+  inset: 0;
+  background: center/cover no-repeat;
+  background-color: var(--choc);
+  z-index: 0;
+  transition: background-image 1s ease;
+}
+#game-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(4,2,0,0.45);
+}
+
+/* Overlay de scanlines sobre o jogo */
+#game-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── TELA: FIM DE JOGO ──────────────────────────────────── */
+#screen-fim {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  background: radial-gradient(ellipse at center, #0d0d1a 0%, #000 70%);
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 999;
+}
+
+#screen-fim h1 {
+  font-size: clamp(18px, 2.8vw, 32px);
+  letter-spacing: 4px;
+  text-align: center;
+  line-height: 2;
+  animation: pulso 2.4s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+#screen-fim p {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(9px, 1.2vw, 13px);
+  color: var(--gray);
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 2.8;
+  max-width: 600px;
+  position: relative;
+  z-index: 2;
+}
+
+#screen-fim button { position: relative; z-index: 2; }
+
+#screen-fim .title-scanlines { z-index: 1; }
+
+/* Variações de título e botão da tela de fim */
+.fim-titulo--gold { color: var(--gold); text-shadow: 0 0 20px #f0c04088, 0 0 40px #f0c04044, 4px 4px 0 #000 !important; animation: pulso    2.4s ease-in-out infinite; }
+.fim-titulo--red  { color: var(--red);  text-shadow: 0 0 20px #ff220088, 0 0 40px #ff220044, 4px 4px 0 #000 !important; animation: pulsoRed 2.4s ease-in-out infinite; }
+
+.fim-btn--gold { background: var(--gold) !important; color: #000 !important;        text-transform: uppercase; }
+.fim-btn--red  { background: #cc2200    !important; color: var(--cream) !important; text-transform: uppercase; }
+
+.fim-btn--gold:hover { background: #ffd060 !important; transform: scale(1.04); }
+.fim-btn--red:hover  { background: #ff3311 !important; transform: scale(1.04); }

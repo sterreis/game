@@ -1,0 +1,71 @@
+/* ═══════════════════════════════════════════════════════════
+   animacoes.css — ANIMAÇÕES E SPRITES
+   Responsabilidade: todos os @keyframes, transições de
+   sprites (falando/quieto/oculto) e classes utilitárias
+   de animação (fadeIn, pulso, pisca, bob).
+═══════════════════════════════════════════════════════════ */
+
+/* ── CONTAINER DE SPRITES ───────────────────────────────── */
+#sprites {
+  position: absolute;
+  bottom: 165px;
+  left: 0;
+  right: 0;
+  height: 500px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.sprite-wrap { display: none; }
+
+/* ── SPRITE BASE ────────────────────────────────────────── */
+.sprite-img {
+  position: absolute;
+  bottom: 0;
+  height: 75vh;
+  max-height: 550px;
+  object-fit: contain;
+  transition: filter 0.4s, opacity 0.4s;
+  image-rendering: pixelated;
+}
+
+/* Estados do sprite */
+.sprite-img.oculto  { display: none; }
+.sprite-img.falando { filter: brightness(1) drop-shadow(0 0 14px #f0c04077); animation: bob 0.4s ease-in-out 1; }
+.sprite-img.quieto  { filter: brightness(0.22) saturate(0.1); }
+
+/* ── POSICIONAMENTO DOS SPRITES ─────────────────────────── */
+#sp-hotdog    { left: 8%; }
+#sp-anti      { right: 13%; }
+#sp-cavaleiro { right: 9%; }
+#sp-boss      { right: 9%; }
+#sp-sarsicha  { right: 9%; }
+
+/* ── KEYFRAMES ──────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulso {
+  0%, 100% { text-shadow: 0 0 14px #f0c04066, 4px 4px 0 #000; }
+  50%       { text-shadow: 0 0 36px #f0c040cc, 4px 4px 0 #000; }
+}
+
+@keyframes pulsoRed {
+  0%, 100% { text-shadow: 0 0 14px #ff220066, 4px 4px 0 #000; }
+  50%       { text-shadow: 0 0 36px #ff2200cc, 4px 4px 0 #000; }
+}
+
+@keyframes pisca {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ── CLASSE UTILITÁRIA ──────────────────────────────────── */
+.fadeIn { animation: fadeIn 0.5s ease; }

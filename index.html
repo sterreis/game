@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Sir. Hot Dog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" type="imagex/png" href="./assets/img/hot-dog_icon.png">
+  <!-- ═══════════════════════════════════════════
+       CSS — ORDEM DE CARREGAMENTO:
+       1. style.css    → base, variáveis, reset, botões, utilitários
+       2. hud.css      → HUD e inventário
+       3. dialogo.css  → caixa de diálogo e escolhas
+       4. batalha.css  → painel de batalha e tutorial
+       5. animacoes.css→ keyframes, transições, sprites
+  ═══════════════════════════════════════════ -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/hud.css">
+  <link rel="stylesheet" href="css/dialogo.css">
+  <link rel="stylesheet" href="css/batalha.css">
+  <link rel="stylesheet" href="css/animacoes.css">
+</head>
+<body>
+
+  <!-- ════════════════════ TELA: INTRO ════════════════════ -->
+  <div id="screen-intro" style="display:none">
+    <div id="intro-texto"></div>
+    <button class="btn-px small" id="btn-pular" onclick="pularIntro()">PULAR INTRODUÇÃO</button>
+  </div>
+
+  <!-- ════════════════════ TELA: TÍTULO ════════════════════ -->
+  <div id="screen-title" style="display:none">
+    <canvas id="particles-canvas"></canvas>
+    <div class="title-scanlines"></div>
+    <div id="title-logo">
+      SIR. HOT DOG<br>
+      <span style="font-size:0.52em;color:#c8962a">A JORNADA EPICA</span>
+    </div>
+    <div id="title-sub">Guilda de Zerum Glozium<br>Provincia de Hospitalis</div>
+    <button class="btn-px" onclick="irParaIntro()">NOVA JORNADA</button>
+    <div style="font-size:6px;color:#555;letter-spacing:1px;text-align:center;line-height:2.4;position:relative;z-index:2">
+      ZG-RPG <br>Fases I, II e V
+    </div>
+  </div>
+
+  <!-- ════════════════════ TELA: TRANSIÇÃO DE FASE ════════════════════ -->
+  <div id="screen-fase" style="display:none">
+    <div id="fase-nome-big"></div>
+    <div id="fase-sub-big"></div>
+  </div>
+
+  <!-- ════════════════════ TELA: JOGO ════════════════════ -->
+  <div id="screen-game" style="display:none">
+    <div id="game-bg"></div>
+    <div id="game-scanlines"></div>
+
+    <!-- HUD -->
+    <div id="hud" class="px-box" style="display:none">
+      <div class="hud-row">VIDA: <span id="hp-txt">5</span> / <span id="maxhp-txt">5</span></div>
+      <div id="hp-bar-wrap"><div id="hp-bar-fill" style="width:100%"></div></div>
+      <div class="hud-row" style="margin-top:4px">FASE: <span id="fase-txt">Prologo</span></div>
+    </div>
+
+    <!-- INVENTÁRIO -->
+    <div id="overlay-inventario"></div>
+    <div id="inventario" class="px-box" style="display:none" onclick="abrirInventario()">
+      <div id="inv-titulo">INVENTARIO</div>
+      <div id="inv-lista"></div>
+    </div>
+
+    <!-- BOTÕES FIXOS -->
+    <button class="btn-px danger small" id="btn-desistir"      style="display:none" onclick="desistir()">DESISTIR</button>
+    <button class="btn-px ghost small"  id="btn-como-funciona" style="display:none" onclick="abrirTutorial()">? COMO FUNCIONA</button>
+
+  <!-- SPRITES -->
+  <div id="sprites">
+    <img class="sprite-img oculto" id="sp-hotdog"   src="assets/img/hotdog.png"      alt="Hot Dog">
+    <img class="sprite-img oculto" id="sp-anti"      src="assets/img/anti.png"        alt="Inimigo">
+    <img class="sprite-img oculto" id="sp-cavaleiro" src="assets/img/cavaleirokk.png" alt="Cavaleiro">
+    <img class="sprite-img oculto" id="sp-boss"      src="assets/img/boss.png"        alt="Glozium">
+    <img class="sprite-img oculto" id="sp-sarsicha"  src="assets/img/sarsicha.png"    alt="Mae">
+  </div>
+
+    <!-- ESCOLHAS -->
+    <div id="escolhas"></div>
+
+    <!-- DIÁLOGO -->
+    <div id="dialogo-box" style="display:none">
+      <div id="dialogo-nome"></div>
+      <div id="dialogo-texto"><span id="cursor-dialogo"></span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ TELA: FIM DE JOGO ════════════════════ -->
+  <div id="screen-fim" style="display:none"></div>
+
+  <!-- ════════════════════ PAINEL: TUTORIAL ════════════════════ -->
+  <div id="painel-tutorial" style="display:none">
+    <div id="tutorial-box" class="px-box fadeIn">
+      <h2>COMO FUNCIONA A BATALHA</h2>
+      <div class="tut-linha">No início da batalha, um <b>número secreto</b> é sorteado pra você e outro pro inimigo. Ninguém sabe o do outro.</div>
+      <div class="tut-linha">A cada rodada você <b>sorteia números</b> dentro do intervalo de vida do inimigo. Se sair o número secreto dele, você causa dano.</div>
+      <div class="tut-linha"><b>Dano =</b> aparições do secreto <b>×</b> valor do secreto (só quando acertado).</div>
+      <div class="tut-linha">O inimigo faz o mesmo contra você.</div>
+      <div class="tut-linha">Seus <b>itens</b> mudam quantos números você sorteia por rodada.</div>
+      <div class="tut-linha" style="color:var(--green)">Vitória: vida do inimigo chega a zero.</div>
+      <div class="tut-linha derrota">Derrota: sua vida chega a zero.</div>
+      <br>
+      <button class="btn-px small" onclick="fecharTutorial()">ENTENDI</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════ PAINEL: BATALHA ════════════════════ -->
+  <div id="painel-batalha" style="display:none">
+    <div id="batalha-box" class="px-box fadeIn">
+      <h2 id="batalha-titulo">BATALHA!</h2>
+      <div id="batalha-hps">
+        <span>HOT DOG: <span id="b-hp-player" style="color:var(--gold)">5</span></span>
+        <span id="b-nome-enemy">INIMIGO: <span id="b-hp-enemy" style="color:var(--red)">4</span></span>
+      </div>
+      <div id="batalha-item-sel">
+        <div id="item-ativo-display">Item: <span>Espada Simples</span></div>
+        <div id="btn-itens" style="margin-top:6px"></div>
+      </div>
+      <div id="batalha-log"></div>
+      <div id="batalha-acoes"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       JAVASCRIPT — ORDEM DE CARREGAMENTO (CRÍTICA):
+       1. data/cores.js     → constantes de cor (sem dependências)
+       2. data/itens.js     → dados estáticos de itens
+       3. data/inimigos.js  → dados estáticos de inimigos
+       4. estado.js         → estado global G e B
+       5. systems/sprites.js     → manipulação de sprites e fundo
+       6. systems/hud.js         → atualização de HUD e inventário
+       7. systems/dialogo.js     → sistema de diálogo e digitação
+       8. systems/escolhas.js    → renderização de escolhas
+       9. systems/transicoes.js  → transições de fase e intro
+      10. systems/batalha.js     → lógica completa de batalha
+      11. fases/fase1.js         → cenas e narrativa da Fase 1
+      12. fases/fase2.js         → Fase 2
+      13. fases/final.js         → Fase Final
+      14. main.js                → inicialização e fluxo principal
+  ════════════════════════════════════════════════════════════ -->
+
+  <!-- DATA -->
+  <script src="js/data/cores.js"></script>
+  <script src="js/data/itens.js"></script>
+  <script src="js/data/inimigos.js"></script>
+
+  <!-- ESTADO GLOBAL -->
+  <script src="js/estado.js"></script>
+
+  <!-- SISTEMAS -->
+  <script src="js/systems/sprites.js"></script>
+  <script src="js/systems/hud.js"></script>
+  <script src="js/systems/dialogo.js"></script>
+  <script src="js/systems/escolhas.js"></script>
+  <script src="js/systems/transicoes.js"></script>
+  <script src="js/systems/batalha.js"></script>
+  <script src="js/systems/tutorial.js"></script>
+
+  <!-- FASES -->
+  <script src="js/fases/fase1.js"></script>
+  <script src="js/fases/fase2.js"></script>
+  <script src="js/fases/final.js"></script>
+
+  <!-- PONTO DE ENTRADA -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>

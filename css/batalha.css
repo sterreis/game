@@ -1,0 +1,207 @@
+/* ═══════════════════════════════════════════════════════════
+   batalha.css — PAINEL DE BATALHA E TUTORIAL
+   Responsabilidade: layout e estilos do painel de batalha
+   (log de mensagens, HP, seleção de itens, ações) e do
+   painel de tutorial.
+═══════════════════════════════════════════════════════════ */
+
+/* Scroll-Bar*/
+/* =========================================
+   SCROLLBAR RPG
+========================================= */
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #120702; border-right: 1px solid #3b2208; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #d4a017, #8a5a00);
+  box-shadow: inset 0 0 0 1px #3a2500, 0 0 6px rgba(212,160,23,0.4);
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, #f3c544, #b37400); }
+::-webkit-scrollbar-corner { background: #120702; }
+
+#painel-tutorial,
+#painel-batalha {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.90);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#tutorial-box { padding: 22px 26px; max-width: 520px; width: 90%; }
+#tutorial-box h2 { font-size: 10px; color: var(--gold); margin-bottom: 20px; letter-spacing: 2px; line-height: 1.8; }
+
+.tut-linha {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  color: var(--cream);
+  line-height: 2;
+  margin-bottom: 10px;
+  padding-left: 8px;
+  border-left: 2px solid var(--gold2);
+}
+.tut-linha.derrota { color: var(--red); border-color: var(--red); }
+
+#batalha-box { padding: 22px 26px; max-width: 560px; width: 100%; }
+#batalha-box h2 { font-size: 9px; color: var(--red); margin-bottom: 16px; letter-spacing: 2px; line-height: 1.8; }
+
+#batalha-hps { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 10px; color: var(--cream); line-height: 2; }
+
+#batalha-item-sel { margin-bottom: 14px; font-size: 6px; color: var(--gold2); line-height: 2; }
+
+#item-ativo-display { font-family: 'Cinzel', serif; font-size: 15px; color: var(--gold); margin-bottom: 10px; line-height: 2; }
+#item-ativo-display span { color: var(--cream); }
+
+.btn-item-batalha {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  background: rgba(8,4,2,0.95);
+  border: 1px solid var(--gold2);
+  color: var(--gold);
+  padding: 7px 14px;
+  cursor: pointer;
+  margin: 3px 3px 3px 0;
+  line-height: 1.8;
+  transition: all 0.15s;
+}
+.btn-item-batalha:hover { border-color: var(--gold); }
+.btn-item-batalha.ativo { background: rgba(240,192,64,0.18); border-color: var(--gold); }
+
+/* Salsichinha desabilitado (raptado) */
+.btn-item-batalha:disabled {
+  background: #111;
+  border-color: #333;
+  color: #444;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+#batalha-log {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  color: var(--cream);
+  line-height: 1.8;
+  min-height: 120px;
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 4px 0;
+}
+
+.msg-player {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.8;
+  align-self: flex-start;
+  background: rgba(240,192,64,0.12);
+  border-left: 3px solid var(--gold);
+  color: var(--cream);
+}
+
+.msg-enemy {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.8;
+  align-self: flex-end;
+  background: rgba(204,51,34,0.12);
+  border-right: 3px solid var(--red);
+  color: var(--cream);
+  text-align: right;
+}
+
+.msg-label { font-size: 10px; letter-spacing: 1px; margin-bottom: 3px; font-family: 'Press Start 2P', monospace; }
+.msg-player .msg-label { color: var(--gold); }
+.msg-enemy  .msg-label { color: var(--red); }
+
+.log-acerto { color: var(--green); }
+.log-erro   { color: var(--red); }
+.log-neutro { color: var(--gold); }
+.log-info   { color: var(--gray); }
+
+#batalha-acoes { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ── TELA DE FIM DE JOGO ─────────────────────────────────── */
+#screen-fim h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(14px, 2vw, 24px);
+  margin-bottom: 1.5rem;
+  text-shadow: 3px 3px 0 #000;
+  letter-spacing: 3px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+#screen-fim p {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(12px, 1.2vw, 16px);
+  max-width: 520px;
+  text-align: center;
+  line-height: 2;
+  color: #e8dcc8;
+  margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+#screen-fim button {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(7px, 0.9vw, 10px);
+  color: #000;
+  background: #f0c040;
+  border: none;
+  padding: 13px 26px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
+  clip-path: polygon(4px 0%, calc(100% - 4px) 0%, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0% calc(100% - 4px), 0% 4px);
+}
+
+/* ── OVERLAY DE DERROTA ───────────────────── */
+#overlay-derrota {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  transition: background 1.2s ease;
+}
+
+#overlay-derrota.visivel {
+  background: rgba(0,0,0,0.78);
+}
+
+#overlay-derrota-titulo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(14px, 2vw, 22px);
+  color: var(--red);
+  letter-spacing: 4px;
+  text-align: center;
+  text-shadow: 3px 3px 0 #3a0000;
+  animation: fadeIn 0.8s ease;
+}
+
+#overlay-derrota-texto {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(10px, 1.2vw, 14px);
+  color: var(--gray);
+  letter-spacing: 3px;
+  text-align: center;
+  line-height: 2;
+  max-width: 520px;
+  animation: fadeIn 1.2s ease;
+}

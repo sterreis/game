@@ -1,0 +1,298 @@
+/* ═══════════════════════════════════════════════════════════
+   hud.css — HUD, INVENTÁRIO E OVERLAY
+═══════════════════════════════════════════════════════════ */
+ 
+/* ── HUD — painel superior esquerdo ────────────────────── */
+#hud {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 10;
+  padding: 10px 14px;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 170px;
+}
+ 
+.hud-row {
+  font-size: 9px;
+  color: var(--cream);
+  line-height: 2;
+}
+ 
+.hud-row span { color: var(--gold); }
+ 
+#hp-bar-wrap {
+  width: 100%;
+  height: 8px;
+  background: #1a0800;
+  border: 1px solid var(--gold2);
+  margin-top: 2px;
+  overflow: hidden;
+}
+ 
+#hp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #aa1800, #ff5500);
+  transition: width 0.4s;
+}
+ 
+/* ── INVENTÁRIO — painel lateral ───────────────────────── */
+#inventario {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  padding: 10px 12px 12px;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 164px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  background: rgba(10,5,2,0.92);
+}
+ 
+#inventario:hover { border-color: var(--gold); }
+ 
+/* título do painel */
+#inv-titulo {
+  font-size: 6px;
+  color: var(--gold2);
+  letter-spacing: 3px;
+  margin-bottom: 7px;
+  text-align: center;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(240,192,64,0.25);
+}
+ 
+#inv-titulo::after {
+  content: '[ BAG ]';
+  display: block;
+  font-size: 5px;
+  color: var(--gray);
+  letter-spacing: 1px;
+  margin-top: 3px;
+  opacity: 0.6;
+}
+ 
+#inventario:hover #inv-titulo { color: var(--gold); }
+ 
+/* ── SLOT DE ITEM ───────────────────────────────────────── */
+.inv-item-mini {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--gray);
+  padding: 5px 8px;
+  line-height: 1.6;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(200,150,42,0.15);
+  clip-path: polygon(
+    3px 0%, calc(100% - 3px) 0%,
+    100% 3px, 100% calc(100% - 3px),
+    calc(100% - 3px) 100%, 3px 100%,
+    0% calc(100% - 3px), 0% 3px
+  );
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+ 
+/* item ativo — dourado com brilho */
+.inv-item-mini[style*="gold"] {
+  color: var(--gold) !important;
+  border-color: rgba(240,192,64,0.5);
+  background: rgba(240,192,64,0.08);
+  text-shadow: 0 0 6px rgba(240,192,64,0.4);
+}
+ 
+/* send pearl — azul */
+.inv-item-mini[style*="blue"] {
+  color: var(--blue) !important;
+  border-color: rgba(96,144,204,0.3);
+  background: rgba(96,144,204,0.06);
+}
+ 
+#inventario:hover .inv-item-mini {
+  border-color: rgba(200,150,42,0.3);
+}
+ 
+/* ── OVERLAY ────────────────────────────────────────────── */
+#overlay-inventario {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.25s ease;
+}
+ 
+#overlay-inventario.aberto { display: flex; }
+ 
+/* ── MODAL ──────────────────────────────────────────────── */
+#inv-modal {
+  background: rgba(6,3,0,0.98);
+  border: 2px solid var(--gold2);
+  clip-path: polygon(
+    8px 0%, calc(100% - 8px) 0%,
+    100% 8px, 100% calc(100% - 8px),
+    calc(100% - 8px) 100%, 8px 100%,
+    0% calc(100% - 8px), 0% 8px
+  );
+  padding: 32px 36px;
+  min-width: 420px;
+  max-width: 580px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 82vh;
+  overflow-y: auto;
+  position: relative;
+}
+ 
+#inv-modal::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+ 
+#inv-modal-titulo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 4px;
+  text-align: center;
+  margin-bottom: 22px;
+  text-shadow: 0 0 14px rgba(240,192,64,0.35), 2px 2px 0 #3a2000;
+}
+ 
+/* ── ITEM INDIVIDUAL ────────────────────────────────────── */
+.inv-modal-item {
+  border-left: 3px solid rgba(200,150,42,0.25);
+  margin-bottom: 2px;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+}
+ 
+.inv-modal-item:hover { background: rgba(240,192,64,0.04); }
+ 
+.inv-modal-item + .inv-modal-item {
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+ 
+.inv-modal-item-nome {
+  font-family: 'Press Start 2P', serif;
+  font-size: 8px;
+  color: var(--cream);
+  padding: 13px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  transition: color 0.15s;
+  letter-spacing: 0.5px;
+}
+ 
+.inv-modal-item-nome:hover { color: var(--gold); }
+ 
+.inv-modal-item-nome::after {
+  content: '▶';
+  font-size: 7px;
+  color: var(--gold2);
+  opacity: 0.5;
+  transition: transform 0.2s, opacity 0.2s;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+ 
+.inv-modal-item-nome.aberto { color: var(--gold); }
+.inv-modal-item-nome.aberto::after {
+  transform: rotate(90deg);
+  opacity: 1;
+}
+ 
+.inv-modal-item-desc {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: var(--gray);
+  line-height: 2;
+  padding: 8px 18px 14px;
+  border-top: 1px solid rgba(240,192,64,0.08);
+  background: rgba(0,0,0,0.3);
+  animation: fadeIn 0.2s ease;
+}
+ 
+/* ── CORES POR TIPO ─────────────────────────────────────── */
+.inv-modal-item.send-pearl { border-left-color: rgba(96,144,204,0.5); }
+.inv-modal-item.send-pearl:hover { background: rgba(96,144,204,0.06); }
+.inv-modal-item.send-pearl .inv-modal-item-nome { color: var(--blue); }
+.inv-modal-item.send-pearl .inv-modal-item-nome::after { color: var(--blue); }
+.inv-modal-item.send-pearl .inv-modal-item-nome:hover,
+.inv-modal-item.send-pearl .inv-modal-item-nome.aberto { color: #88bbff; }
+ 
+.inv-modal-item.estilingue { border-left-color: rgba(68,204,102,0.5); }
+.inv-modal-item.estilingue:hover { background: rgba(68,204,102,0.05); }
+.inv-modal-item.estilingue .inv-modal-item-nome { color: var(--green); }
+.inv-modal-item.estilingue .inv-modal-item-nome::after { color: var(--green); }
+.inv-modal-item.estilingue .inv-modal-item-nome:hover,
+.inv-modal-item.estilingue .inv-modal-item-nome.aberto { color: #88ffaa; }
+ 
+/* ── CONFIRMAÇÃO SEND PEARL ─────────────────────────────── */
+#inv-confirmacao {
+  margin: 4px 16px 12px;
+  padding: 14px 16px;
+  background: rgba(96,144,204,0.07);
+  border: 1px solid rgba(96,144,204,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: fadeIn 0.2s ease;
+  clip-path: polygon(
+    4px 0%, calc(100% - 4px) 0%,
+    100% 4px, 100% calc(100% - 4px),
+    calc(100% - 4px) 100%, 4px 100%,
+    0% calc(100% - 4px), 0% 4px
+  );
+}
+ 
+#inv-confirmacao p {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: var(--cream);
+  line-height: 2;
+  text-align: center;
+}
+ 
+#inv-confirmacao-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+ 
+/* ── RODAPÉ ─────────────────────────────────────────────── */
+.inv-modal-rodape {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(240,192,64,0.1);
+  display: flex;
+  justify-content: center;
+}
+ 
+/* ── BOTÕES FIXOS ─────────────────────────────────────────── */
+#btn-desistir {
+  position: absolute;
+  bottom: 185px;
+  left: 14px;
+  z-index: 12;
+}
+ 
+#btn-como-funciona {
+  position: absolute;
+  bottom: 185px;
+  right: 14px;
+  z-index: 12;
+}

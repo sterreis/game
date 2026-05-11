@@ -1,0 +1,95 @@
+/* ═══════════════════════════════════════════════════════════
+   dialogo.css — CAIXA DE DIÁLOGO E ESCOLHAS
+   Responsabilidade: estilos da caixa de fala (nome + texto
+   + cursor animado) e dos botões de escolha do jogador.
+═══════════════════════════════════════════════════════════ */
+
+/* ── CAIXA DE DIÁLOGO — barra inferior da tela de jogo ──── */
+#dialogo-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 162px;
+  background: rgba(0,0,0,0.88);
+  border-top: 2px solid var(--gold2);
+  z-index: 10;
+  padding: 16px 28px 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+#dialogo-nome {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  min-height: 14px;
+  text-shadow: 2px 2px 0 #3a2000;
+  line-height: 1.5;
+}
+
+#dialogo-texto {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(11px, 1.1vw, 14px);   /* corrigido: min < max */
+  color: var(--cream);
+  line-height: 1.9;
+  min-height: 48px;
+}
+
+#dialogo-texto .acerto { color: var(--green); }
+#dialogo-texto .erro   { color: var(--red); }
+#dialogo-texto .neutro { color: var(--gold); }
+#dialogo-texto .info   { color: var(--gray); }
+
+#cursor-dialogo {
+  display: inline-block;
+  width: 7px;
+  height: 11px;
+  background: var(--gold);
+  animation: pisca 0.8s step-end infinite;
+  vertical-align: middle;
+  margin-left: 3px;
+}
+
+/* ── ESCOLHAS ─────────────────────────────────────────────── */
+#escolhas {
+  position: absolute;
+  bottom: 170px;
+  left: 0;
+  right: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  z-index: 15;
+  pointer-events: auto;
+}
+
+.btn-escolha {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  background: rgba(4,2,0,0.92);
+  border: 1px solid var(--gold2);
+  color: var(--gold);
+  padding: 10px 20px;
+  min-width: 240px;
+  max-width: 90vw;
+  cursor: pointer;
+  letter-spacing: 1px;
+  line-height: 1.8;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  clip-path: polygon(
+    4px 0%, calc(100% - 4px) 0%,
+    100% 4px, 100% calc(100% - 4px),
+    calc(100% - 4px) 100%, 4px 100%,
+    0% calc(100% - 4px), 0% 4px
+  );
+}
+
+.btn-escolha:hover {
+  background: rgba(240,192,64,0.1);
+  border-color: var(--gold);
+}
